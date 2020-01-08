@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-extend="mail.chatter.Buttons">
+        
+        <!-- Rename Send Message to Partner Message -->
+        <t t-jquery="button[t-if='newMessageButton']" t-operation="replace">
+            <button t-if="newMessageButton" type="button" class="btn btn-link o_chatter_button_new_message" title="Send a message to Partner" disabled="disabled">
+                Partner Message
+            </button>
+        </t>
+
+        <!-- Rename Log Note to Internal Communication -->
+        <t t-jquery="button[t-if='logNoteButton']" t-operation="replace">
+            <button t-if="logNoteButton" class="btn btn-link o_chatter_button_log_note" title="Internal Communication. Followers will not be notified." disabled="disabled">
+                Internal Communication
+            </button>
+        </t>
+    </t>
+</templates>
