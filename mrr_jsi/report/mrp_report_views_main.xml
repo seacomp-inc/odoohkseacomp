@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            string="BoM Material Readiness" 
+            id="action_report_bom_material_rediness_main" 
+            model="mrp.bom" 
+            name="mrr_jsi.report_bom_material_rediness_main"
+            file="mrr_jsi.report_bom_material_rediness_main"
+            report_type="qweb-pdf"
+            print_report_name="'Bom Structure - %s' % object.display_name"
+        />
+    </data>
+</odoo>
