@@ -13,11 +13,9 @@
             <field name="model">mrp.bom</field>
             <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
             <field name="arch" type="xml">
-                <!-- <div name="button_box" position="inside"> -->
                 <xpath expr="//form/sheet/div[@name='button_box']/button" position="before">
                     <button name="%(mrr_jsi.action_report_bom_material_rediness_main)d" type="action"
-                        class="oe_stat_button" icon="fa-bars" string="Material Readiness Report" context="{'from_custom': 1}"/>
-                <!-- </div> -->
+                        class="oe_stat_button" style="width: 14.5% !important;" icon="fa-bars" string="Material Readiness Report" />
                 </xpath>
             </field>
         </record>
@@ -28,11 +26,13 @@
             <field name="arch" type="xml">
                 <tree string="Purchase Order Lines" create="false" edit="false">
                     <field name="name"/>
+                    <field name="partner_id"/>
                     <field name="product_id"/>
                     <field name="order_id"/>
                     <field name="product_qty"/>
                     <field name="product_uom"/>
                     <field name="date_planned"  widget="date"/>
+<!--                     <field name="x_studio_requested_date"/> -->
                 </tree>
             </field>
         </record>

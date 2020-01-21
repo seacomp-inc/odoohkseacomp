@@ -5,13 +5,15 @@
         <div class="container o_mrp_bom_report_page">
             <t t-if="data.get('components') or data.get('lines')">
                 <div class="row">
-                    <button href="#" t-att-data-res-id="data['related_pol']" t-att-data-model="'purchase.order.line'" class="o_mrp_bom_action_open_pol_tree btn-primary">
-                        Open Related Purchase Order Lines
-                    </button>
+                    <div class="col-lg-12 mb16">
+                        <button href="#" t-att-data-res-id="data['related_pol']" t-att-data-model="'purchase.order.line'" class="o_mrp_bom_action_open_pol_tree btn btn-primary">
+                            Open Related Purchase Order Lines
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-lg-12">
                         <h1>BoM Material Readiness Report</h1>
-
-
                         <h3>
                             <a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['product'].id" t-att-data-model="data['product']._name" class="o_mrp_bom_action">
                                 <t t-esc="data['bom_prod_name']"/>
