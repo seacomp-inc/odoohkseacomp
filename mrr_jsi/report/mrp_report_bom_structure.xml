@@ -25,79 +25,65 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="mt16">
-<table width="100%" class="o_mrp_bom_expandable">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>BoM</th>
-            <th class="text-right">Quantity</th>
-            <th class="text-left">Unit of Measure</th>
-            <th class="text-left">Available Quantity</th>
-            <th class="text-left">Quantity on Order</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <!-- Product -->
-            <td>
-                <span>
-                    <a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['product'].id" t-att-data-model="'product.product'" class="o_mrp_bom_action">
-                        <t t-esc="data['bom_prod_name']"/>
-                    </a>
-                    <t t-else="" t-esc="data['bom_prod_name']"/>
-                </span>
-            </td>
-            <!-- BoM -->
-            <td>
-                <span>
-                    <a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['bom'].id" t-att-data-model="'mrp.bom'" class="o_mrp_bom_action">
-                        <t t-esc="data['code']"/>
-                    </a>
-                    <t t-else="" t-esc="data['code']"/>
-                </span>
-            </td>
-            <!-- Quantity -->
-            <td class="text-right">
-                <span>
-                    <t t-esc="data['bom_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
-                </span>
-            </td>
-            <!-- Unit of Measure -->
-            <td>
-                <span>
-                    <t t-esc="data['bom'].product_uom_id.name"/>
-                </span>
-            </td>
-            <!-- Available Quantity -->
-            <td class="text-right">
-                <span>
-                    <t t-esc="data['quantity_on_hand']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
-                </span>
-            </td>
-            <!-- Quantity on Order -->
-            <td class="text-right">
-                <span>
-                    <t t-esc="data['quantity_on_order']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
-                </span>
-            </td>
-        </tr>
-        <t t-if="data['report_type'] == 'html'" t-call="mrr_jsi.report_mrp_bom_material_line"/>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td></td>
-            <td></td>
-            <td class="text-right"><span><strong>Unit Cost</strong></span></td>
-            <td groups="uom.group_uom"></td>
-            <td t-if="data['report_structure'] != 'bom_cost'" class="o_mrp_prod_cost text-right">
-                <span><t t-esc="data['price']/data['bom_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
-            </td>
-            <td t-if="data['report_structure'] != 'bom_structure'" class="o_mrp_bom_cost text-right">
-                <span><t t-esc="data['total']/data['bom_qty']" t-options='{"widget": "monetary", "display_currency": currency}'/></span>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+                            <table width="100%" class="o_mrp_bom_expandable">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>BoM</th>
+                                        <th class="text-right">Quantity</th>
+                                        <th class="text-left">Unit of Measure</th>
+                                        <th class="text-left">Available Quantity</th>
+                                        <th class="text-left">Quantity on Order</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <!-- Product -->
+                                        <td>
+                                            <span>
+                                                <a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['product'].id" t-att-data-model="'product.product'" class="o_mrp_bom_action">
+                                                    <t t-esc="data['bom_prod_name']"/>
+                                                </a>
+                                                <t t-else="" t-esc="data['bom_prod_name']"/>
+                                            </span>
+                                        </td>
+                                        <!-- BoM -->
+                                        <td>
+                                            <span>
+                                                <a href="#" t-if="data['report_type'] == 'html'" t-att-data-res-id="data['bom'].id" t-att-data-model="'mrp.bom'" class="o_mrp_bom_action">
+                                                    <t t-esc="data['code']"/>
+                                                </a>
+                                                <t t-else="" t-esc="data['code']"/>
+                                            </span>
+                                        </td>
+                                        <!-- Quantity -->
+                                        <td class="text-right">
+                                            <span>
+                                                <t t-esc="data['bom_qty']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                            </span>
+                                        </td>
+                                        <!-- Unit of Measure -->
+                                        <td>
+                                            <span>
+                                                <t t-esc="data['bom'].product_uom_id.name"/>
+                                            </span>
+                                        </td>
+                                        <!-- Available Quantity -->
+                                        <td class="text-right">
+                                            <span>
+                                                <t t-esc="data['quantity_on_hand']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                            </span>
+                                        </td>
+                                        <!-- Quantity on Order -->
+                                        <td class="text-right">
+                                            <span>
+                                                <t t-esc="data['quantity_on_order']" t-options='{"widget": "float", "decimal_precision": "Product Unit of Measure"}'/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <t t-if="data['report_type'] == 'html'" t-call="mrr_jsi.report_mrp_bom_material_line"/>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -107,9 +93,6 @@
             </t>
         </div>
     </template>
-
-
-   
 
     <template t-name="report_mrp_bom_material_line">
         <t t-set="currency" t-value="data['currency']"/>
