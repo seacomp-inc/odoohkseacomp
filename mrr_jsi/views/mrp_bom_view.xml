@@ -32,7 +32,7 @@
                     <field name="product_qty"/>
                     <field name="product_uom"/>
                     <field name="date_planned"  widget="date"/>
-<!--                     <field name="x_studio_requested_date"/> -->
+                    <field name="x_studio_requested_date"/>
                 </tree>
             </field>
         </record>
