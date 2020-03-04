@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_move_tree_supplier_chain_report_jsi" model="ir.ui.view">
+            <field name="name">view.move.tree.supply.chain.report.jsi</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <tree create="0" editable="bottom" default_order="commitment_date">
+                    <field name="commitment_date"/>
+                    <field name="origin"/>
+                    <field name="product_id"/>
+                    <field name="warehouse_id"/>
+                    <field name="picking_code"/>
+                    <field name="origin"/>
+                    <field name="partner_id"/>
+                    <field name="state"/>
+                    <field name="product_uom_qty"/>
+                    <field name="calc_on_hand_qty"/>
+                    <field name="calc_forecasted_qty"/>
+                    <field name="run_total"/>
+                    <field name="comment"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_move_tree_supplier_chain_report_search_jsi" model="ir.ui.view">
+            <field name="name">view.move.tree.supply.chain.report.search.jsi</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+                <search string="Stock Moves">
+                    <field name="origin" filter_domain="['|', '|', ('origin', 'ilike', self), ('name', 'ilike', self), ('picking_id', 'ilike', self)]" string="Reference"/>
+                    <field name="product_id" domain="[('product_id', 'ilike', self)]" string="Product"/>
+                    <field name="warehouse_id" domain="[('warehouse_id', 'ilike', self)]" string="warehouse"/>
+
+                    <filter string="Ready" name="ready" domain="[('state','=','assigned')]" help="Stock moves that are Available (Ready to process)"/>
+                    <filter string="To Do" name="future" domain="[('state','in',('assigned','confirmed','waiting'))]" help="Stock moves that are Confirmed, Available or Waiting"/>
+                    <separator/>
+                    <filter string="Incoming" name="incoming" domain="[('location_id.usage', 'not in', ('internal', 'transit')), ('location_dest_id.usage', 'in', ('internal', 'transit'))]"/>
+                    <filter string="Outgoing" name="outgoing" domain="[('location_id.usage', 'in', ('internal', 'transit')), ('location_dest_id.usage', 'not in', ('internal', 'transit'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Product" name="groupby_product" domain="[]"  context="{'group_by':'product_id'}"/>
+                        <filter string="Warehouse" name="groupby_warehouse" domain="[]"  context="{'group_by':'warehouse_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_stock_move_supply_chain_report_jsi" model="ir.actions.act_window">
+            <field name="name">Supply Chain Report</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', 'not in', ['draft', 'done', 'cancel'])]</field>
+            <field name="view_id" ref="view_move_tree_supplier_chain_report_jsi"/>
+            <field name="search_view_id" ref="view_move_tree_supplier_chain_report_search_jsi"/>
+            <field name="context">{'search_default_groupby_warehouse': 1,}</field>
+            <field name="help" type="html">
+              <p>
+                This menu gives you the full traceability of Supply Chain Reports.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="action_stock_move_supply_chain_report_jsi" id="menu_action_stock_move_supply_chain_report_jsi" parent="stock.menu_warehouse_report" sequence="140" groups="base.group_no_one"/>
+
+    </data>
+</odoo>
