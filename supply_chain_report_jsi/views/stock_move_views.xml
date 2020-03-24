@@ -63,7 +63,7 @@
             </field>
         </record>
 
-        <menuitem action="action_stock_move_supply_chain_report_jsi" id="menu_action_stock_move_supply_chain_report_jsi" parent="stock.menu_warehouse_report" sequence="140" groups="base.group_no_one"/>
+        <menuitem action="action_stock_move_supply_chain_report_jsi" id="menu_action_stock_move_supply_chain_report_jsi" parent="stock.menu_warehouse_report" sequence="140"/>
 
     </data>
 </odoo>

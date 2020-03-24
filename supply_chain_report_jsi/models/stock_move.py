@@ -13,15 +13,18 @@ class StockMove(models.Model):
     comment = fields.Text('Comments')
     date_internal_transfer = fields.Date('Commitment date')
 
-    @api.depends('date_internal_transfer', 'sale_line_id.x_studio_confirmed_delivery_date', 'purchase_line_id.date_planned')
+    @api.depends('date_internal_transfer', 'sale_line_id.x_studio_confirmed_delivery_date', 'purchase_line_id.date_planned', 'picking_id.backorder_id')
     def _compute_commitment_date(self):
         for move in self:
-            if move.sale_line_id:
-                move.commitment_date = fields.Date.to_string(move.sale_line_id.x_studio_confirmed_delivery_date)
-            elif move.purchase_line_id:
-                move.commitment_date = fields.Date.to_string(move.purchase_line_id.date_planned)
+            if not move.picking_id.backorder_id:
+                if move.sale_line_id:
+                    move.commitment_date = fields.Date.to_string(move.sale_line_id.x_studio_confirmed_delivery_date)
+                elif move.purchase_line_id:
+                    move.commitment_date = fields.Date.to_string(move.purchase_line_id.date_planned)
+                else:
+                    move.commitment_date = fields.Date.to_string(move.date_internal_transfer)
             else:
-                move.commitment_date = fields.Date.to_string(move.date_internal_transfer)
+                move.commitment_date = fields.Date.to_string(move.picking_id.scheduled_date)
 
     @api.depends('commitment_date', 'warehouse_id', 'picking_type_id.warehouse_id', 'product_id.qty_available')
     def _compute_qty(self):
@@ -36,6 +39,7 @@ class StockMove(models.Model):
                     ('product_id', '=', move.product_id.id),
                     ('picking_code', 'in', ['incoming', 'outgoing']),
                     ('state', 'not in', ['draft', 'done', 'cancel']),
+                    ('commitment_date', '!=', False),
 #                     ('id', '!=', move.id),
                     ])
 

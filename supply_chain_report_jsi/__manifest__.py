@@ -14,6 +14,6 @@
     'data': [
         'views/stock_move_views.xml',
         'views/sale_order_line_views.xml',
-        # 'models/base_automation.xml',
+        'actions/base_automation.xml',
     ],
 }

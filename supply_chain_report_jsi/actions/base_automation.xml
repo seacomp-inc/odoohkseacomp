@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+	<record id="action_commitment_date_change" model="base.automation">
+        <field name="name">[Sale Order] Commitment date change - jsi</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="trigger">on_write</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+if record:
+    order = record.order_id
+    date_data = []
+    for line in order.order_line:
+        if line.x_studio_confirmed_delivery_date:
+            date_data.append(line.x_studio_confirmed_delivery_date)
+    if date_data:
+        order['commitment_date'] = str(min(date_data))
+    ]]> </field>
+    </record>
+
+    <record id="action_set_warehouse_on_moves" model="base.automation">
+        <field name="name">[Stock Picking] Set warehouse on moves - jsi</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="trigger">on_write</field>
+        <field name="active" eval="True"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+# Here Transfer Location(TRAN/Stock) is fixed, we use id or external id for it. 
+if record.location_id.id == 73 or record.location_dest_id.id == 73:
+    record.move_ids_without_package.write({'warehouse_id': record.picking_type_id.warehouse_id.id})
+    ]]> </field>
+    </record>
+
+</data>
+</odoo>
