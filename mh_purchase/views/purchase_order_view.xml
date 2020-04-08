@@ -1,0 +1,26 @@
+<!-- no use! --> 
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+	<data>
+		<record id="purchase_order_form" model="ir.ui.view">
+			<field name="name">mh.purchase.order.form</field>
+			<field name="model">purchase.order</field>
+			<field name="inherit_id" ref="purchase.purchase_order_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//page/group/group/div" position="replace"/>
+				<xpath expr="//page/group/group/label" position="replace"/>
+				<xpath expr="//field[@name='picking_type_id']" position="replace"/>
+				<xpath expr="//field[@name='date_order']" position="after">
+				 	<!-- <field name="picking_type_id" domain="[('code','=','incoming')]" options="{'no_create': True}" groups="stock.group_stock_multi_locations"/> --> 
+                    <field name="picking_type_id" options="{'no_create': True}" />
+				 	<label for="date_planned"/>
+						<div>
+							<field name="date_planned" required="1" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))]}" modifiers="{'readonly': [['state', 'not in', ['draft', 'sent']]], 'required': true}"/>
+							<button name="action_set_date_planned" type="object" states="draft,sent" string="Set date to all order lines" help="This changes the scheduled date of all order lines to the given date" class="fa fa-calendar o_icon_button oe_edit_only" modifiers="{'invisible': [['state', 'not in', ['draft', 'sent']]]}"/>
+						</div>
+				</xpath>
+			</field>
+		</record>
+	</data>
+</odoo>
