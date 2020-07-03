@@ -1,0 +1,56 @@
+<odoo>
+    <!-- new model -->
+    <record id="x_model_product_multiple_uom" model="ir.model">
+        <field name="name">Product Multiple UoM</field>
+        <field name="model">x_product.multiple.uom</field>
+    </record>
+
+    <!-- model related fields -->
+    <record id="field_x_product_multiple_uom_x_price" model="ir.model.fields">
+        <field name="name">x_price</field>
+        <field name="field_description">Price</field>
+        <field name="ttype">float</field>
+        <field name="model_id" ref="x_model_product_multiple_uom"/>
+    </record>
+
+    <record id="field_x_product_multiple_uom_x_qty" model="ir.model.fields">
+        <field name="name">x_qty</field>
+        <field name="field_description">Qty</field>
+        <field name="ttype">float</field>
+        <field name="model_id" ref="x_model_product_multiple_uom"/>
+    </record>
+
+    <record id="field_x_product_multiple_uom_x_uom_id" model="ir.model.fields">
+        <field name="name">x_uom_id</field>
+        <field name="field_description">UoM</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">uom.uom</field>
+        <field name="model_id" ref="x_model_product_multiple_uom"/>
+    </record>
+
+    <record id="field_x_product_multiple_uom_x_product_id" model="ir.model.fields">
+        <field name="name">x_product_id</field>
+        <field name="field_description">Product</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">product.template</field>
+        <field name="model_id" ref="x_model_product_multiple_uom"/>
+    </record>
+
+    <!-- fields for product -->
+    <record id="field_x_product_multiple_uom_x_multi_uom_ok" model="ir.model.fields">
+        <field name="name">x_multi_uom_ok</field>
+        <field name="field_description">Multiple Unit Measure</field>
+        <field name="ttype">boolean</field>
+        <field name="model_id" ref="product.model_product_template"/>
+    </record>
+
+    <record id="field_x_product_multiple_uom_x_price_uom_ids" model="ir.model.fields">
+        <field name="name">x_price_uom_ids</field>
+        <field name="field_description">Pos Multi Unit Measure</field>
+        <field name="ttype">one2many</field>
+        <field name="relation">x_product.multiple.uom</field>
+        <field name="relation_field">x_product_id</field>
+        <field name="model_id" ref="product.model_product_template"/>
+    </record>
+
+</odoo>

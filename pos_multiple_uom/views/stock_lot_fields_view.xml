@@ -1,0 +1,60 @@
+<odoo>
+
+    <record id="field_stock_production_lot_x_use_date" model="ir.model.fields">
+        <field name="name">x_use_date</field>
+        <field name="field_description">Best before Date</field>
+        <field name="ttype">datetime</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+    </record>
+
+    <record id="field_stock_production_lot_x_removal_date" model="ir.model.fields">
+        <field name="name">x_removal_date</field>
+        <field name="field_description">Removal Date</field>
+        <field name="ttype">datetime</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+    </record>
+
+    <record id="field_stock_production_lot_x_life_date" model="ir.model.fields">
+        <field name="name">x_life_date</field>
+        <field name="field_description">End of Life Date</field>
+        <field name="ttype">datetime</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+    </record>
+
+    <record id="field_stock_production_lot_x_alert_date" model="ir.model.fields">
+        <field name="name">x_alert_date</field>
+        <field name="field_description">Alert Date</field>
+        <field name="ttype">datetime</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+    </record>
+
+    <record id="move_line_rule_on_create_or_write_set_date" model="base.automation">
+        <field name="name">Base Automation: Set Related Date on Lot</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="state">code</field>
+        <field name="code">
+if record.x_use_date or record.x_removal_date or record.x_life_date or record.x_alert_date and record.lot_id:
+    record.lot_id['use_date'] = record.x_use_date
+    record.lot_id['removal_date'] = record.x_removal_date
+    record.lot_id['life_date'] = record.x_life_date
+    record.lot_id['alert_date'] = record.x_alert_date
+        </field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="lot_inherit_stock_move_line_operation_tree_view" model="ir.ui.view">
+        <field name="name">stock.move.line.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+        <field name="arch" type="xml">
+            <field name="lot_name" position="after">
+                <field name="x_use_date"/>
+                <field name="x_removal_date"/>
+                <field name="x_life_date"/>
+                <field name="x_alert_date"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
