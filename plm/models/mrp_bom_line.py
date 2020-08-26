@@ -50,16 +50,16 @@ class MrpBomLineExtension(models.Model):
         """
         bom_obj = self.env['mrp.bom']
         for bom_line in self:
-            for bom_id in bom_obj.search(
-                    [('product_id', '=', bom_line.product_id.id),
-                     ('product_tmpl_id', '=', bom_line.product_id.product_tmpl_id.id),
-                     ('type', '=', bom_line.type)]
-            ):
-                child_bom = bom_obj.browse(bom_id.id)
-                for child_bom_line in child_bom.bom_line_ids:
-                    child_bom_line._get_child_bom_lines()
-                self.child_line_ids = [x.id for x in child_bom.bom_line_ids]
-                return
+            domain = [
+                '|',
+                ('product_id', '=', bom_line.product_id.id),
+                ('product_id', '=', False),
+                ('product_tmpl_id', '=', bom_line.product_id.product_tmpl_id.id),
+                ('type', '=', bom_line.type)
+            ]
+            child_bom = bom_obj.search(domain, limit=1)
+            if child_bom:
+                self.child_line_ids = child_bom.bom_line_ids.ids
             else:
                 self.child_line_ids = False
 
