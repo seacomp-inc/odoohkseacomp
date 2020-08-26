@@ -291,10 +291,10 @@ class plm_compare_bom(osv.osv.osv_memory):
     def computeOnlyProduct(self, bom1Dict, bom2Dict):
         def checkAndAdd(leftDict, rightDict, listToAppend, funcToCall):
             for product_id, toCreateValsList in leftDict.items():
-                if product_id not in rightDict:
-                    for toCreateVals in toCreateValsList:
+                for toCreateVals in toCreateValsList:
+                    if product_id not in rightDict:
                         toCreateVals['reason'] = 'added'
-                        listToAppend.append(funcToCall(toCreateVals))
+                    listToAppend.append(funcToCall(toCreateVals))
         leftItems = []
         rightItems = []
         checkAndAdd(bom1Dict, bom2Dict, leftItems, self.getLeftBomObj)
