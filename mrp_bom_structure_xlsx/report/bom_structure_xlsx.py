@@ -16,13 +16,19 @@ class BomStructureXlsx(models.AbstractModel):
     def print_bom_children(self, ch, sheet, row, level):
         i, j = row, level
         j += 1
-        sheet.write(i, 1, '> '*j)
+        sheet.write(i, 1, str(j - 1))
         sheet.write(i, 2, ch.product_id.default_code or '')
-        sheet.write(i, 3, ch.product_id.display_name or '')
-        sheet.write(i, 4, ch.product_uom_id._compute_quantity(
+        sheet.write(i, 3, ', '.join([route.name for route in ch.product_id.route_ids]) or '')
+        sheet.write(i, 4, ch.x_description or '')
+        sheet.write(i, 5, ch.product_id.display_name or '')
+        sheet.write(i, 6, ch.product_uom_id._compute_quantity(
             ch.product_qty, ch.product_id.uom_id) or '')
-        sheet.write(i, 5, ch.product_id.uom_id.name or '')
-        sheet.write(i, 6, ch.bom_id.code or '')
+        sheet.write(i, 7, ch.product_id.uom_id.name or '')
+        sheet.write(i, 8, ch.product_id.standard_price or '')
+        sheet.write(i, 9, ch.x_designator or '')
+        sheet.write(i, 10, ch.x_mfgr_pn.x_name or '')
+        sheet.write(i, 11, ch.x_mfgr_name.name or '')
+        sheet.write(i, 12, ch.bom_id.code or '')
         i += 1
         for child in ch.child_line_ids:
             i = self.print_bom_children(child, sheet, i, j)
@@ -37,9 +43,9 @@ class BomStructureXlsx(models.AbstractModel):
         sheet.fit_to_pages(1, 0)
         sheet.set_zoom(80)
         sheet.set_column(0, 0, 40)
-        sheet.set_column(1, 2, 20)
-        sheet.set_column(3, 3, 40)
-        sheet.set_column(4, 6, 20)
+        sheet.set_column(1, 4, 20)
+        sheet.set_column(5, 5, 40)
+        sheet.set_column(6, 12, 20)
         bold = workbook.add_format({'bold': True})
         title_style = workbook.add_format({'bold': True,
                                            'bg_color': '#FFFFCC',
@@ -47,9 +53,15 @@ class BomStructureXlsx(models.AbstractModel):
         sheet_title = [_('BOM Name'),
                        _('Level'),
                        _('Product Reference'),
+                       _('Routes'),
+                       _('Component Description'),
                        _('Product Name'),
                        _('Quantity'),
                        _('Unit of Measure'),
+                       _('Unit Cost'),
+                       _('Designator'),
+                       _('Manufacturer P/N'),
+                       _('Manufacturer Name'),
                        _('Reference')
                        ]
         sheet.set_row(0, None, None, {'collapsed': 1})
@@ -60,10 +72,10 @@ class BomStructureXlsx(models.AbstractModel):
             sheet.write(i, 0, o.product_tmpl_id.name or '', bold)
             sheet.write(i, 1, '', bold)
             sheet.write(i, 2, o.product_id.default_code or '', bold)
-            sheet.write(i, 3, o.product_id.name or '', bold)
-            sheet.write(i, 4, o.product_qty, bold)
-            sheet.write(i, 5, o.product_uom_id.name or '', bold)
-            sheet.write(i, 6, o.code or '', bold)
+            sheet.write(i, 5, o.product_id.name or '', bold)
+            sheet.write(i, 6, o.product_qty, bold)
+            sheet.write(i, 7, o.product_uom_id.name or '', bold)
+            sheet.write(i, 12, o.code or '', bold)
             i += 1
             j = 0
             for ch in o.bom_line_ids:
