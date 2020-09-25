@@ -26,6 +26,11 @@ class MrpProduction(models.Model):
         production._generate_moves()
         return production
 
+    @api.one
+    def button_transfer_details(self):
+        if self.picking_ids and self.mh_tracking_no:
+            self.picking_ids.write({'mh_tracking_no': self.mh_tracking_no})
+
     # @api.model
     # def create(self, values):
     #     production = super(MrpProduction, self).create(values)
@@ -42,4 +47,4 @@ class StockMove(models.Model):
 class StockMoveLine(models.Model):
     _inherit = 'stock.move.line'
 
-    mo_mh_tracking_no = fields.Char(related="move_id.mo_mh_tracking_no", store=True, readonly=True, string="MH Tracking No.(MO)")
+    mo_mh_tracking_no = fields.Char(related="move_id.production_id.mh_tracking_no", store=True, readonly=True, string="MH Tracking No.(MO)")
