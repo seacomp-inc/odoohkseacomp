@@ -8,7 +8,11 @@
             <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='bom_id']" position="after">
-                    <field name="mh_tracking_no"/>
+                    <label for="mh_tracking_no"/>
+                    <div>
+                        <field name="mh_tracking_no" class="oe_inline"/>
+                        <button name="button_transfer_details" type="object" string="Transfer to Picking" class="oe_link oe_edit_only"/>
+                    </div>
                 </xpath>
             </field>
         </record>
