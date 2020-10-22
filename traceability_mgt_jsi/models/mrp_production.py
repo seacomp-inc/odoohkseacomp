@@ -21,7 +21,7 @@ class MrpProduction(models.Model):
         if not values.get('procurement_group_id'):
             # values['procurement_group_id'] = self.env["procurement.group"].create({'name': values['name']}).id
             # by jsi
-            values['procurement_group_id'] = self.env["procurement.group"].create({'mh_tracking_no': values['mh_tracking_no'], 'name': values['name']}).id
+            values['procurement_group_id'] = self.env["procurement.group"].create({'mh_tracking_no': values.get('mh_tracking_no'), 'name': values.get('name')}).id
         production = super(MrpProduction, self).create(values)
         return production
 
