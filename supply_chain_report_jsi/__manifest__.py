@@ -14,6 +14,11 @@
         'views/sale_order_line_views.xml',
         'views/product_views.xml',
         'views/picking_type_views.xml',
+        'views/assets.xml',
         'actions/base_automation.xml',
+        'actions/ir_actions_server.xml',
+    ],
+    'qweb': [
+        'static/src/xml/stock_move_tree_generate_report_views.xml',
     ],
 }

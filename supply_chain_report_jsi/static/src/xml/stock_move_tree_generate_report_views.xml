@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+    <t t-extend="ListView.buttons" t-name="SupplyChainReportListView.buttons">
+        <t t-jquery="button.o_list_button_save" t-operation="after">
+            <button type="button" class="btn btn-primary o_button_generate_report">
+                Update Data
+            </button>
+        </t>
+    </t>
+</templates>

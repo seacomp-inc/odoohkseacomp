@@ -6,7 +6,7 @@
             <field name="name">view.move.tree.supply.chain.report.jsi</field>
             <field name="model">stock.move</field>
             <field name="arch" type="xml">
-                <tree create="0" editable="bottom" default_order="commitment_date">
+                <tree create="0" editable="bottom" default_order="commitment_date" js_class="view_move_tree_supplier_chain_report_jsi">
                     <field name="commitment_date"/>
                     <field name="origin"/>
                     <field name="product_id"/>
