@@ -14,9 +14,9 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     commitment_date = fields.Date('Commitment date', compute="_compute_commitment_date", store="True")
-    calc_on_hand_qty = fields.Float('Warehouse QOH', compute="_compute_qty")
-    calc_forecasted_qty = fields.Float('Warehouse Forecasted', compute="_compute_qty")
-    run_total = fields.Float('Run Total', compute="_compute_qty")
+    calc_on_hand_qty = fields.Float('Warehouse QOH')
+    calc_forecasted_qty = fields.Float('Warehouse Forecasted')
+    run_total = fields.Float('Run Total')
     comment = fields.Text('Comments')
     date_internal_transfer = fields.Date('Internal Transfer Date')
 
@@ -42,32 +42,31 @@ class StockMove(models.Model):
             else:
                 move.commitment_date = move.date_internal_transfer and fields.Date.to_string(move.date_internal_transfer) or False
 
-    @api.depends('product_uom_qty', 'commitment_date', 'warehouse_id', 'picking_type_id.warehouse_id', 'product_id.qty_available')
     def _compute_qty(self):
         for move in self:
             warehouse = move.warehouse_id
-            if warehouse and move.state not in ['draft', 'done', 'cancel'] and move.commitment_date:
-                # calc_on_hand_qty
-                move.calc_on_hand_qty = move.product_id.with_context(warehouse=warehouse.id).qty_available
 
-                moves_in_out = move.search([
-                    ('warehouse_id', '=', warehouse.id),
-                    ('product_id', '=', move.product_id.id),
-                    ('picking_code', 'in', ['incoming', 'outgoing']),
-                    ('state', 'not in', ['draft', 'done', 'cancel']),
-                    ('commitment_date', '!=', False),
-#                     ('id', '!=', move.id),
-                    ])
+            # calc_on_hand_qty
+            move.calc_on_hand_qty = move.product_id.with_context(warehouse=warehouse.id).qty_available
 
-                # calc_forecasted_qty
-                moves_in = moves_in_out.filtered(lambda x: x.picking_code == 'incoming')
-                moves_out = moves_in_out.filtered(lambda x: x.picking_code == 'outgoing')
-                move.calc_forecasted_qty = move.calc_on_hand_qty + sum(moves_in.mapped('product_uom_qty')) - sum(moves_out.mapped('product_uom_qty'))
+            moves_in_out = move.search([
+                ('warehouse_id', '=', warehouse.id),
+                ('product_id', '=', move.product_id.id),
+                ('picking_code', 'in', ['incoming', 'outgoing']),
+                ('state', 'not in', ['draft', 'done', 'cancel']),
+                ('commitment_date', '!=', False),
+                # ('id', '!=', move.id),
+                ])
 
-                # run_total
-                move_in_qty = sum(moves_in.filtered(lambda x: x.commitment_date.strftime('%Y-%m-%d') <= move.commitment_date.strftime('%Y-%m-%d')).mapped('product_uom_qty'))
-                move_out_qty = sum(moves_out.filtered(lambda x: x.commitment_date.strftime('%Y-%m-%d') <= move.commitment_date.strftime('%Y-%m-%d')).mapped('product_uom_qty'))
-                move.run_total = move.calc_on_hand_qty - move_out_qty + move_in_qty
+            # calc_forecasted_qty
+            moves_in = moves_in_out.filtered(lambda x: x.picking_code == 'incoming')
+            moves_out = moves_in_out.filtered(lambda x: x.picking_code == 'outgoing')
+            move.calc_forecasted_qty = move.calc_on_hand_qty + sum(moves_in.mapped('product_uom_qty')) - sum(moves_out.mapped('product_uom_qty'))
+
+            # run_total
+            move_in_qty = sum(moves_in.filtered(lambda x: x.commitment_date.strftime('%Y-%m-%d') <= move.commitment_date.strftime('%Y-%m-%d')).mapped('product_uom_qty'))
+            move_out_qty = sum(moves_out.filtered(lambda x: x.commitment_date.strftime('%Y-%m-%d') <= move.commitment_date.strftime('%Y-%m-%d')).mapped('product_uom_qty'))
+            move.run_total = move.calc_on_hand_qty - move_out_qty + move_in_qty
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
