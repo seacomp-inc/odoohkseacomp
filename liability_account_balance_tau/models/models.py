@@ -9,10 +9,10 @@ class AccountJournal(models.Model):
     x_cash_availability =  fields.Float(compute='_calculate_cash_availability', string='Cash Availability', store=True)
 
 
-    @api.depends('x_stuido_max_loan_amount', 'x_liability_account_balance')
+    @api.depends('x_studio_max_loan_amount', 'x_liability_account_balance')
     def _calculate_cash_availability(self):
         for account in self:
-            account.x_cash_availability = account.x_stuido_max_loan_amount - account.x_liability_account_balance
+            account.x_cash_availability = account.x_studio_max_loan_amount - account.x_liability_account_balance
 
 
     @api.depends('x_studio_related_liability_account')
