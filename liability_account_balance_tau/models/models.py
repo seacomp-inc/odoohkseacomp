@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.tools import float_is_zero
 
 class AccountJournal(models.Model):
     _inherit = 'account.journal'
@@ -18,4 +19,9 @@ class AccountJournal(models.Model):
     @api.depends('x_studio_related_liability_account')
     def _calculate_liability_account_balance(self):
         for account in self:
-            account.x_liability_account_balance = sum(self.env['account.move.line'].search([['account_id','=',account.x_studio_related_liability_account.id]]).mapped('balance'))
+            balance = sum(self.env['account.move.line'].search([['account_id','=',account.x_studio_related_liability_account.id]]).mapped('balance'))
+            #check if balance close to zero -> set to zero
+            if float_is_zero(balance, precision_digits=2):
+                account.x_liability_account_balance = 0
+            else:
+                account.x_liability_account_balance = balance
