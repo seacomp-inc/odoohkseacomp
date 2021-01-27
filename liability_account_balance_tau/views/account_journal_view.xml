@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cash_availability_kanban" model="ir.ui.view">
+        <field name="name">cash.availability.kanban</field>
+	    <field name="model">account.journal</field>
+	    <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//kanban/templates//field[@name='type']" position="after">
+				<br/>
+				<t t-if="journal_type == 'bank'">
+					<span>Cash Availability:</span>
+					<field display="right" name="x_cash_availability"/>
+				</t>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="cash_availability_form" model="ir.ui.view">
+		<field name="name">cash.availability.form</field>
+		<field name="model">account.journal</field>
+		<field name="inherit_id" ref="account.view_account_journal_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//form/sheet/notebook" position="inside">
+				<page string="Cash Availability" attrs="{'invisible': [('type', '!=', 'bank')]}">
+					<group>
+						<field name="x_related_liability_account"/>
+						<field name="x_liability_account_balance"/>
+						<field name="x_max_loan_amount"/>
+						<field name="x_cash_availability"/>
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+</odoo>
