@@ -13,7 +13,7 @@ class AccountJournal(models.Model):
     @api.depends('x_studio_max_loan_amount', 'x_liability_account_balance')
     def _calculate_cash_availability(self):
         for account in self:
-            account.x_cash_availability = account.x_studio_max_loan_amount - account.x_liability_account_balance
+            account.x_cash_availability = account.x_studio_max_loan_amount - abs(account.x_liability_account_balance)
 
 
     @api.depends('x_studio_related_liability_account')
