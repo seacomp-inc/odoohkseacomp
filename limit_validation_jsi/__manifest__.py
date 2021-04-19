@@ -9,8 +9,9 @@
     'description': """
         Limit sales Confirmation and Delivery validation
     """,
-    'depends': ['sale_stock'],
+    'depends': ['sale_stock', 'account_reports', 'quality_control'],
     'data': [
+        'views/res_partner.xml',
         'views/sale_order_views.xml',
         'views/stock_picking_view.xml',
         'views/res_config_settings_views.xml',

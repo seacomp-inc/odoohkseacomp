@@ -6,16 +6,20 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="quality_control.stock_picking_view_form_inherit_quality"/>
             <field name="arch" type="xml">
-                <field name="origin" position="after">
-                    <field name="is_overdue_limit_end"/>
-                </field>
-                <xpath expr="//button[@name='button_validate'][hasclass('oe_highlight')]" position="attributes">
-                <attribute name="attrs">{'invisible':['|','|','|',('x_over_credit_limit','=',True),('quality_check_todo','=',True),('show_validate','!=',True),('is_overdue_limit_end','=',True)]}</attribute>
-                </xpath>
-                <xpath expr="//button[@name='button_validate'][hasclass('o_btn_validate')]" position="attributes">
-                    <attribute name="attrs">{'invisible': ['|','|','|',('x_over_credit_limit','=',True),('quality_check_todo','=',False),('show_validate','!=',True),('is_overdue_limit_end','=',True)]}</attribute>
-                </xpath>
-
+                <h1 position="before">
+                    <field name="remaining_credit" invisible="1"/>
+                    <field name="is_overdue_limit_end" invisible="1"/>
+                    <div attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}">
+                        <div class="alert alert-danger" role="alert" style="margin-bottom:0px;"
+                            attrs="{'invisible': ['|', ('partner_id', '=', False), ('remaining_credit', '>', 0)]}">
+                            <strong>This customer is over credit limit. To proceed, please contact Mike.</strong>
+                        </div>
+                        <div class="alert alert-danger" role="alert" style="margin-bottom:0px;"
+                            attrs="{'invisible': [('is_overdue_limit_end', '=', False)]}">
+                            <strong>The AR for this customer are overdue. To proceed, please contact Mike.</strong>
+                        </div>
+                    </div>
+                </h1>
             </field>
         </record>
     </data>
