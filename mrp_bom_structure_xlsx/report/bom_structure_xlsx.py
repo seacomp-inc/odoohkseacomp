@@ -22,7 +22,7 @@ class BomStructureXlsx(models.AbstractModel):
         sheet.write(i, 4, ch.x_description or '')
         sheet.write(i, 5, ch.product_id.name or '')
         sheet.write(i, 6, ch.product_qty or '')
-        sheet.write(i, 7, ch.product_id.uom_id.name or '')
+        sheet.write(i, 7, ch.product_uom_id.name or '')
         sheet.write(i, 8, ch.product_id.standard_price or '')
         sheet.write(i, 9, ch.x_designator or '')
         sheet.write(i, 10, ch.x_mfgr_pn.x_name or '')
