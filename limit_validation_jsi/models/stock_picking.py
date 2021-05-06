@@ -31,7 +31,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         if self.env.user.has_group('account.group_account_manager'):
             return super().button_validate()
-        if self.remaining_credit <= 0:
+        if self.picking_type_code == 'outgoing' and self.remaining_credit <= 0:
             raise UserError(_("This customer is over credit limit. To proceed, please contact Mike."))
         if self.is_overdue_limit_end:
             raise UserError(_("The AR for this customer are overdue. To proceed, please contact Mike."))
