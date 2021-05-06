@@ -11,7 +11,7 @@
                     <field name="is_overdue_limit_end" invisible="1"/>
                     <div attrs="{'invisible': [('state', 'in', ('done', 'cancel'))]}">
                         <div class="alert alert-danger" role="alert" style="margin-bottom:0px;"
-                            attrs="{'invisible': ['|', ('partner_id', '=', False), ('remaining_credit', '>', 0)]}">
+                            attrs="{'invisible': ['|', '|', ('picking_type_code', '!=', 'outgoing'), ('partner_id', '=', False), ('remaining_credit', '>', 0)]}">
                             <strong>This customer is over credit limit. To proceed, please contact Mike.</strong>
                         </div>
                         <div class="alert alert-danger" role="alert" style="margin-bottom:0px;"
